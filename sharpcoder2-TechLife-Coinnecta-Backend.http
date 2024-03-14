@@ -1,0 +1,6 @@
+@sharpcoder2_TechLife_Coinnecta_Backend_HostAddress = http://localhost:5197
+
+GET {{sharpcoder2_TechLife_Coinnecta_Backend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
