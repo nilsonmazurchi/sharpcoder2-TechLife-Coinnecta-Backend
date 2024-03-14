@@ -1,6 +1,20 @@
 @sharpcoder2_TechLife_Coinnecta_Backend_HostAddress = http://localhost:5197
 
-GET {{sharpcoder2_TechLife_Coinnecta_Backend_HostAddress}}/weatherforecast/
+GET {{sharpcoder2_TechLife_Coinnecta_Backend_HostAddress}}/usuarios
 Accept: application/json
 
 ###
+
+POST {{sharpcoder2_TechLife_Coinnecta_Backend_HostAddress}}/usuarios
+Content-Type: application/json
+
+{
+  "nome": "Maria Fernanda",
+  "telefone": "(19)981335678",
+  "email": "ni@email.com",
+  "cpf":"18765896362",
+  "diaNascimento": "15/08/1987",
+  "senha": "123456",
+  "tipoPessoa": "Fisica"
+
+}

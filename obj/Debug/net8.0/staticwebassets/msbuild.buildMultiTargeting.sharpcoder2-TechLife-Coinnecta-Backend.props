@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\sharpcoder2-TechLife-Coinnecta-Backend.props" />
+</Project>
