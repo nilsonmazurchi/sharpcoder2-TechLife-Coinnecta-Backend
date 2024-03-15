@@ -128,3 +128,4 @@ C:\Users\Usuario\Documents\Estudos\CSharp\Hackadev\sharpcoder2-TechLife-Coinnect
 C:\Users\Usuario\Documents\Estudos\CSharp\Hackadev\sharpcoder2-TechLife-Coinnecta-Backend\obj\Debug\net8.0\sharpcoder2-TechLife-Coinnecta-Backend.pdb
 C:\Users\Usuario\Documents\Estudos\CSharp\Hackadev\sharpcoder2-TechLife-Coinnecta-Backend\obj\Debug\net8.0\sharpcoder2-TechLife-Coinnecta-Backend.genruntimeconfig.cache
 C:\Users\Usuario\Documents\Estudos\CSharp\Hackadev\sharpcoder2-TechLife-Coinnecta-Backend\obj\Debug\net8.0\ref\sharpcoder2-TechLife-Coinnecta-Backend.dll
+C:\Users\Usuario\Documents\Estudos\CSharp\Hackadev\sharpcoder2-TechLife-Coinnecta-Backend\bin\Debug\net8.0\BCrypt.Net.dll

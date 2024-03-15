@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "W7KdgEAGOly4Ttjs8pQQdCUFe38KeStVvCW5YLdjo5aFrLz6ktmegCRWC94eZQysjsLjVbYP6CUAm0DZJctb2Q==",
+  "dgSpecHash": "gI+JxbfhpgN6IOVojB/yO7XkCl2LQjsMpBap2H1b9JDSIuy/szV/K2KzX816yVn56P1UJya8E5EciJOI1/4qHA==",
   "success": true,
   "projectFilePath": "C:\\Users\\Usuario\\Documents\\Estudos\\CSharp\\Hackadev\\sharpcoder2-TechLife-Coinnecta-Backend\\sharpcoder2-TechLife-Coinnecta-Backend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Usuario\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
+    "C:\\Users\\Usuario\\.nuget\\packages\\bcrypt.net\\0.1.0\\bcrypt.net.0.1.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.2\\microsoft.aspnetcore.openapi.8.0.2.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",
@@ -60,5 +61,16 @@
     "C:\\Users\\Usuario\\.nuget\\packages\\system.text.json\\8.0.0\\system.text.json.8.0.0.nupkg.sha512",
     "C:\\Users\\Usuario\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "O pacote 'BCrypt.Net 0.1.0' foi restaurado usando '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' em vez da estrutura de destino do projeto 'net8.0'. Esse pacote pode não ser totalmente compatível com o seu projeto.",
+      "libraryId": "BCrypt.Net",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }

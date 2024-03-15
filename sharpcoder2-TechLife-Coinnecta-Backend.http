@@ -11,7 +11,7 @@ Content-Type: application/json
 {
   "nome": "Maria Fernanda",
   "telefone": "(19)981335678",
-  "email": "ni@email.com",
+  "email": "nilre@email.com",
   "cpf":"18765896362",
   "diaNascimento": "1987-08-15",
   "senha": "123456",

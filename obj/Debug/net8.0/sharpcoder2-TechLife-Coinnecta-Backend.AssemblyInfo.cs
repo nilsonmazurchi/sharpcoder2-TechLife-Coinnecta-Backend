@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("sharpcoder2-TechLife-Coinnecta-Backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+30dfe202c9e65699780e91da657ea2b4a38a3a3c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d22eca15dd52e6debb4f6a05f58510e0a6cd1831")]
 [assembly: System.Reflection.AssemblyProductAttribute("sharpcoder2-TechLife-Coinnecta-Backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("sharpcoder2-TechLife-Coinnecta-Backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
