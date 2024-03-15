@@ -2,15 +2,18 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model;
 
     public class Usuario : Entity
     {
-    private string? Nome {get; set;} 
-    private string? Telefone {get;set;} 
-    private string? Email {get;set;} 
-    private string? Cpf {get; set;} 
-    private string? Cnpj { get; set; }
-    private DateOnly? DiaNascimento {get; set;} 
-    private string? Senha {get; set;}
-    private string? TipoPessoa {get; set;} 
+    public string? Nome {get; set;} 
+    public string? Ddd {get; set;}
+    public string? Telefone {get;set;} 
+    public string? Email {get;set;} 
+    public string? Cpf {get; set;} 
+    public string? Cnpj { get; set; }
+    public DateOnly? DiaNascimento {get; set;} 
+    public string? Senha {get; set;}
+    public string? TipoPessoa {get; set;} 
 
-    public Endereco? Endereco { get; set; }
+    public int? EnderecoId { get; set; }
+
+    public virtual Endereco? Endereco {get; set;}
 
     }

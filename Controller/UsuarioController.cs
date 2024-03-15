@@ -34,7 +34,7 @@ public class UsuarioController : ControllerBase
         }
 
         [HttpPost]
-        public IActionResult Cadastrar(CreateUsuarioDto novoUsuario) {
+        public IActionResult Cadastrar([FromBody]CreateUsuarioDto novoUsuario) {
 
             var usuarioParaCadastro = _mapper.Map<Usuario>(novoUsuario);
 

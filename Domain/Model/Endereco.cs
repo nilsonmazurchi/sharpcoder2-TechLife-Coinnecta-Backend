@@ -10,9 +10,6 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model
         public string? PontoRef {get; set;}
         public int? Numero {get; set;}
         public string? Bairro {get; set;}
-
-        public int UsuarioId { get; set; }
         
-        public Usuario? Usuario { get; set; }
-    }
+        }
 }

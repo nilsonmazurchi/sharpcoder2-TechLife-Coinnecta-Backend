@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using sharpcoder2_TechLife_Coinnecta_Backend.Domain;
 
@@ -10,9 +11,11 @@ using sharpcoder2_TechLife_Coinnecta_Backend.Domain;
 namespace sharpcoder2_TechLife_Coinnecta_Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240314230638_CreateRelationsUsuariosEnderecos1")]
+    partial class CreateRelationsUsuariosEnderecos1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
@@ -47,7 +50,13 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Migrations
                     b.Property<string>("Uf")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId")
+                        .IsUnique();
 
                     b.ToTable("Enderecos");
                 });
@@ -58,49 +67,24 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Cnpj")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Cpf")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Ddd")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateOnly?>("DiaNascimento")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("EnderecoId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Nome")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Senha")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Telefone")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("TipoPessoa")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("EnderecoId");
 
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model.Endereco", b =>
+                {
+                    b.HasOne("sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model.Usuario", "Usuario")
+                        .WithOne("Endereco")
+                        .HasForeignKey("sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model.Endereco", "UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model.Usuario", b =>
                 {
-                    b.HasOne("sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model.Endereco", "Endereco")
-                        .WithMany()
-                        .HasForeignKey("EnderecoId");
-
                     b.Navigation("Endereco");
                 });
 #pragma warning restore 612, 618

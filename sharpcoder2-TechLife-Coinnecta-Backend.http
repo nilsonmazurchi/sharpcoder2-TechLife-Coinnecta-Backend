@@ -13,7 +13,7 @@ Content-Type: application/json
   "telefone": "(19)981335678",
   "email": "ni@email.com",
   "cpf":"18765896362",
-  "diaNascimento": "15/08/1987",
+  "diaNascimento": "1987-08-15",
   "senha": "123456",
   "tipoPessoa": "Fisica"
 
