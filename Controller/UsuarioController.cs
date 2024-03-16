@@ -90,10 +90,10 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
         // }
 
      [HttpGet("checar-email")]
-public bool ChecarEmailUsuarioExiste(string email)
-{
-    return _appDbContext.Usuarios.Any(u => u.Email == email);
-}
+     public bool ChecarEmailUsuarioExiste(string email)
+        {
+        return _appDbContext.Usuarios.Any(u => u.Email == email);
+        }
 
         [HttpGet("checar-cnpj")]
         public bool ChecarCNPJUsuarioExiste(string cnpj)
