@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using sharpcoder2_TechLife_Coinnecta_Backend.Domain;
 
@@ -10,9 +11,11 @@ using sharpcoder2_TechLife_Coinnecta_Backend.Domain;
 namespace sharpcoder2_TechLife_Coinnecta_Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240317201625_CreateContas02")]
+    partial class CreateContas02
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
@@ -23,13 +26,13 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<double>("Balanco")
+                        .HasColumnType("REAL");
+
                     b.Property<string>("NumeroConta")
                         .HasColumnType("TEXT");
 
                     b.Property<double>("Rendimento")
-                        .HasColumnType("REAL");
-
-                    b.Property<double>("Saldo")
                         .HasColumnType("REAL");
 
                     b.Property<int>("StatusConta")
@@ -47,11 +50,14 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Migrations
                     b.Property<int?>("UsuarioId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<double>("Valor")
+                        .HasColumnType("REAL");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("ContaCorrentes");
+                    b.ToTable("ContaCorrente");
                 });
 
             modelBuilder.Entity("sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model.ContaPoupanca", b =>
@@ -60,14 +66,14 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<double>("Balanco")
+                        .HasColumnType("REAL");
+
                     b.Property<double>("LimiteCredito")
                         .HasColumnType("REAL");
 
                     b.Property<string>("NumeroConta")
                         .HasColumnType("TEXT");
-
-                    b.Property<double>("Saldo")
-                        .HasColumnType("REAL");
 
                     b.Property<int>("StatusConta")
                         .HasColumnType("INTEGER");
@@ -77,7 +83,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ContaPoupancas");
+                    b.ToTable("ContaPoupanca");
                 });
 
             modelBuilder.Entity("sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model.Endereco", b =>
