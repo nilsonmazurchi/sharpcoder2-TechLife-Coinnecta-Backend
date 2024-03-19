@@ -3,12 +3,14 @@ using sharpcoder2_TechLife_Coinnecta_Backend.Domain;
 using sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos;
 using sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
 {
     [ApiController]
     [Route("usuarios")]
+    [Authorize]
     public class UsuarioController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
