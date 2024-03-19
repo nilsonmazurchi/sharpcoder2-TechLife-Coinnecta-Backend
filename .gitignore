@@ -7,3 +7,4 @@ obj/Debug/net8.0/
 *.db
 *.db-shm
 *.db-wal
+*.vs
