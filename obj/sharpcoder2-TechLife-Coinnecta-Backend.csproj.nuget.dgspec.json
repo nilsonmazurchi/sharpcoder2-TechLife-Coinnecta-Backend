@@ -1,32 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Usuario\\Documents\\Estudos\\CSharp\\Hackadev\\sharpcoder2-TechLife-Coinnecta-Backend\\sharpcoder2-TechLife-Coinnecta-Backend.csproj": {}
+    "/Users/matheuspanobianco/Documents/Progamação/Sharp Coders/projeto-final/back/sharpcoder2-TechLife-Coinnecta-Backend/sharpcoder2-TechLife-Coinnecta-Backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Usuario\\Documents\\Estudos\\CSharp\\Hackadev\\sharpcoder2-TechLife-Coinnecta-Backend\\sharpcoder2-TechLife-Coinnecta-Backend.csproj": {
+    "/Users/matheuspanobianco/Documents/Progamação/Sharp Coders/projeto-final/back/sharpcoder2-TechLife-Coinnecta-Backend/sharpcoder2-TechLife-Coinnecta-Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Usuario\\Documents\\Estudos\\CSharp\\Hackadev\\sharpcoder2-TechLife-Coinnecta-Backend\\sharpcoder2-TechLife-Coinnecta-Backend.csproj",
+        "projectUniqueName": "/Users/matheuspanobianco/Documents/Progamação/Sharp Coders/projeto-final/back/sharpcoder2-TechLife-Coinnecta-Backend/sharpcoder2-TechLife-Coinnecta-Backend.csproj",
         "projectName": "sharpcoder2-TechLife-Coinnecta-Backend",
-        "projectPath": "C:\\Users\\Usuario\\Documents\\Estudos\\CSharp\\Hackadev\\sharpcoder2-TechLife-Coinnecta-Backend\\sharpcoder2-TechLife-Coinnecta-Backend.csproj",
-        "packagesPath": "C:\\Users\\Usuario\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Usuario\\Documents\\Estudos\\CSharp\\Hackadev\\sharpcoder2-TechLife-Coinnecta-Backend\\obj\\",
+        "projectPath": "/Users/matheuspanobianco/Documents/Progamação/Sharp Coders/projeto-final/back/sharpcoder2-TechLife-Coinnecta-Backend/sharpcoder2-TechLife-Coinnecta-Backend.csproj",
+        "packagesPath": "/Users/matheuspanobianco/.nuget/packages/",
+        "outputPath": "/Users/matheuspanobianco/Documents/Progamação/Sharp Coders/projeto-final/back/sharpcoder2-TechLife-Coinnecta-Backend/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Usuario\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/matheuspanobianco/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -100,7 +93,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

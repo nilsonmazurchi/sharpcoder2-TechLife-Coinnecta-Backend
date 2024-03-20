@@ -1,3 +1,3 @@
 ﻿<Project>
-  <Import Project="..\buildMultiTargeting\sharpcoder2-TechLife-Coinnecta-Backend.props" />
+  <Import Project="../buildMultiTargeting/sharpcoder2-TechLife-Coinnecta-Backend.props" />
 </Project>

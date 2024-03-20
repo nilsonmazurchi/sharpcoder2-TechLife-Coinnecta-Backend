@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model;
 
 namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos
 {
@@ -15,6 +16,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos
         public string? Cnpj { get; set; }
         public DateOnly? DiaNascimento {get; set;} 
         public string? Senha {get; set;}
-        public string? TipoPessoa {get; set;} 
+        public string? TipoPessoa {get; set;}
+        public virtual CreateEnderecoDto? CreateEnderecoDto { get; set; }
     }
 }
