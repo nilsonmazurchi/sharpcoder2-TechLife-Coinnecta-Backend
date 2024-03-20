@@ -10,7 +10,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
 {
     [ApiController]
     [Route("usuarios")]
-    [Authorize]
+    //[Authorize]
     public class UsuarioController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;

@@ -11,7 +11,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model;
     public DateTime DataAbertura = DateTime.Now;
     public TipoConta TipoConta { get; set; }
     public StatusConta StatusConta { get; set; }
-    public double Saldo { get; set; } = 0;
+    public double Saldo { get; set; } 
 
 
     // public double AtualizarBalanco(double quantia)
@@ -21,8 +21,8 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model;
 
 public enum TipoConta
 {
-    ContaCorrente,
-    ContaPoupanca
+    Corrente,
+    Poupanca
 }
 
 public enum StatusConta
