@@ -12,6 +12,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain
 
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<Endereco> Enderecos { get; set; }
+        
        
     }
 }
