@@ -1,4 +1,4 @@
-namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos
+namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos.Endereco
 {
     public class CreateEnderecoDto
     {

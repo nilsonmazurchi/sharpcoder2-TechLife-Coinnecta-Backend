@@ -1,7 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using sharpcoder2_TechLife_Coinnecta_Backend.Domain;
-using sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos;
+using sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos.Endereco;
 using sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model;
 
 namespace EnderecosController
@@ -21,22 +21,21 @@ namespace EnderecosController
 
 
         [HttpPost]
-        public IActionResult CadastroDeEndereco(CreateEnderecoDto novoEnderecoDto)
+        public async Task<IActionResult> CadastroDeEndereco([FromBody] CreateEnderecoDto novoEnderecoDto)
         {
-
             var enderecoParaCadastro = _mapper.Map<Endereco>(novoEnderecoDto);
 
-            var result = _appDbContext.Enderecos.Add(enderecoParaCadastro);
-            _appDbContext.SaveChanges();
+            var enderecoResult = await _appDbContext.Enderecos.AddAsync(enderecoParaCadastro);
+            await _appDbContext.SaveChangesAsync();
 
-            var enderecoSalvo = result.Entity;
+            var enderecoSalvo = enderecoResult.Entity;
 
             var usuario = _appDbContext.Usuarios.FirstOrDefault(u => u.Id == enderecoSalvo.Id);
 
             if (usuario != null)
             {
                 usuario.EnderecoId = enderecoSalvo.Id;
-                _appDbContext.SaveChanges();
+                await _appDbContext.SaveChangesAsync();
             }
             else
             {
@@ -48,9 +47,9 @@ namespace EnderecosController
 
 
         [HttpGet("{id:int}")]
-        public IActionResult EnderecoPorId(int id)
+        public async Task<IActionResult> EnderecoPorId(int id)
         {
-            var buscaEndereco = _appDbContext.Enderecos.Find(id);
+            var buscaEndereco = await _appDbContext.Enderecos.FindAsync(id);
 
             if (buscaEndereco == null)
                 return NotFound();
@@ -59,19 +58,27 @@ namespace EnderecosController
         }
 
         [HttpPut("{id}")]
-        public IActionResult AtualizarEndereco(int id, [FromBody] CreateEnderecoDto enderecoDto)
+        public async Task<IActionResult> AtualizarEndereco(int id, [FromBody] UpdateEnderecoDto enderecoDto)
         {
-            //verifica se o endereço com o id fornecido existe no db
             var enderecoExistente = _appDbContext.Enderecos.FirstOrDefault(e => e.Id == id);
             if (enderecoExistente == null)
             {
                 return NotFound("Endereço não encontrado");
             }
-
-            _mapper.Map(enderecoDto, enderecoExistente);
-            _appDbContext.SaveChanges();
+            
+            enderecoExistente.Logradouro = enderecoDto.Logradouro;
+            enderecoExistente.Cep = enderecoDto.Cep;
+            enderecoExistente.Uf = enderecoDto.Uf;
+            enderecoExistente.Cidade = enderecoDto.Cidade;
+            enderecoExistente.Complemento = enderecoDto.Complemento;
+            enderecoExistente.PontoRef = enderecoDto.PontoRef;
+            enderecoExistente.Numero = enderecoDto.Numero;
+            enderecoExistente.Bairro = enderecoDto.Bairro;
+            
+            await _appDbContext.SaveChangesAsync();
 
             return Ok("Endereço atualizado com sucesso");
         }
+
     }
 }
