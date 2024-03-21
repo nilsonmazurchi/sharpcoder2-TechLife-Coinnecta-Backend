@@ -18,10 +18,10 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model
 
 
         public int ContaOrigemId { get; set; }
-        public Conta ContaOrigem { get; set; }
+        public Conta? ContaOrigem { get; set; }
 
-        public int? ContaDestinoId { get; set; }
-        public Conta ContaDestino { get; set; }
+        public int ContaDestinoId { get; set; }
+        public Conta? ContaDestino { get; set; }
 
         public void ProcessarTransacao()
         {
