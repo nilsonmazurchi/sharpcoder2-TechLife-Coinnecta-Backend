@@ -1,12 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model;
-
-namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos
+namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos.Usuario
 {
-    public class CreateUsuarioDto
+    public class UpdateUsuarioDto
     {
         public string? Nome {get; set;} 
         public string? Ddd {get; set; }
@@ -17,6 +11,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos
         public DateOnly? DiaNascimento {get; set;} 
         public string? Senha {get; set;}
         public string? TipoPessoa {get; set;}
-        public virtual CreateEnderecoDto? CreateEnderecoDto { get; set; }
+        public string? StatusUsuario { get; set; }
+        
     }
 }
