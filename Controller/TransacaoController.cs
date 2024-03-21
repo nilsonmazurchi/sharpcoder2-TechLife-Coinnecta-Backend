@@ -9,7 +9,7 @@ using sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model;
 namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
 {
     [ApiController]
-    [Route("Transacoes")]
+    [Route("transacoes")]
     public class TransacaoController : ControllerBase
     {
 
@@ -26,20 +26,102 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
         
 
 
-        [HttpPost]
-        public IActionResult CriarTransacao(CreateTransacaoDto novaTransacaoDto)
+        
+        [HttpPost("transferencia")]
+        public IActionResult Transferir(CreateTransferenciaDto transferenciaDto)
         {
             try
             {
-                var novaTransacao = _mapper.Map<Transacao>(novaTransacaoDto);
-                _appDbContext.Transacaos.Add(novaTransacao);
+                var transacao = _mapper.Map<Transacao>(transferenciaDto);
+                transacao.TipoTransacao = TipoTransacao.Transferencia;
+                transacao.ProcessarTransacao();
+                _appDbContext.Transacaos.Add(transacao);
                 _appDbContext.SaveChanges();
-
-                return CreatedAtAction(nameof(ObterTransacaoPorId), new { id = novaTransacao.Id }, novaTransacao);
+                return CreatedAtAction(nameof(ObterTransacaoPorId), new { id = transacao.Id }, transacao);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Erro ao criar transação: {ex.Message}");
+                return StatusCode(500, $"Erro ao processar transferência: {ex.Message}");
+            }
+        }
+
+        [HttpPost("saque")]
+        public IActionResult Sacar(CreateSaqueDto saqueDto)
+        {
+            try
+            {
+                var transacao = _mapper.Map<Transacao>(saqueDto);
+                transacao.TipoTransacao = TipoTransacao.Saque;
+                transacao.ProcessarTransacao();
+                _appDbContext.Transacaos.Add(transacao);
+                _appDbContext.SaveChanges();
+                return CreatedAtAction(nameof(ObterTransacaoPorId), new { id = transacao.Id }, transacao);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao processar saque: {ex.Message}");
+            }
+        }
+
+        [HttpPost("deposito")]
+        public IActionResult Depositar(CreateDepositoDto depositoDto)
+        {
+            try
+            {
+                var transacao = _mapper.Map<Transacao>(depositoDto);
+                transacao.TipoTransacao = TipoTransacao.Deposito;
+                transacao.ProcessarTransacao();
+                _appDbContext.Transacaos.Add(transacao);
+                _appDbContext.SaveChanges();
+                return CreatedAtAction(nameof(ObterTransacaoPorId), new { id = transacao.Id }, transacao);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao processar depósito: {ex.Message}");
+            }
+        }
+
+        
+
+        [HttpPut("{id}")]
+        public IActionResult AtualizarTransacao(int id, Transacao transacaoAtualizada)
+        {
+            try
+            {
+                var transacaoExistente = _appDbContext.Transacaos.FirstOrDefault(t => t.Id == id);
+                if (transacaoExistente == null)
+                    return NotFound("Transação não encontrada");
+
+                
+                transacaoExistente.DataHoraTrasacao = transacaoAtualizada.DataHoraTrasacao;
+                transacaoExistente.DescricaoTrasacao = transacaoAtualizada.DescricaoTrasacao;
+                transacaoExistente.TipoTransacao = transacaoAtualizada.TipoTransacao;
+
+                _appDbContext.SaveChanges();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao atualizar transação: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult ExcluirTransacao(int id)
+        {
+            try
+            {
+                var transacao = _appDbContext.Transacaos.FirstOrDefault(t => t.Id == id);
+                if (transacao == null)
+                    return NotFound("Transação não encontrada");
+
+                _appDbContext.Transacaos.Remove(transacao);
+                _appDbContext.SaveChanges();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao excluir transação: {ex.Message}");
             }
         }
 
@@ -48,8 +130,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
         {
             try
             {
-                var transacao = _appDbContext.Transacaos.Find(id);
-
+                var transacao = _appDbContext.Transacaos.FirstOrDefault(t => t.Id == id);
                 if (transacao == null)
                     return NotFound("Transação não encontrada");
 
@@ -57,30 +138,24 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Erro ao obter transação: {ex.Message}");
+                return StatusCode(500, $"Erro ao obter transação por ID: {ex.Message}");
             }
         }
 
-        [HttpPut("{id}")]
-        public IActionResult AtualizarTransacao(int id, CreateTransacaoDto transacaoAtualizadaDto)
+        [HttpGet("Todos")]
+        public IActionResult ObterTodasTransacoes()
         {
             try
             {
-                var transacaoExistente = _appDbContext.Transacaos.Find(id);
-
-                if (transacaoExistente == null)
-                    return NotFound("Transação não encontrada");
-
-                _mapper.Map(transacaoAtualizadaDto, transacaoExistente);
-                _appDbContext.SaveChanges();
-
-                return NoContent();
+                var transacoes = _appDbContext.Transacaos.ToList();
+                return Ok(transacoes);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Erro ao atualizar transação: {ex.Message}");
+                return StatusCode(500, $"Erro ao obter todas as transações: {ex.Message}");
             }
         }
+
 
     }
 }

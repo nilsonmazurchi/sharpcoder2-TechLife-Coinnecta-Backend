@@ -1,14 +1,30 @@
 
-using sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model;
+
 
 namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos
 {
-    public class CreateTransacaoDto
+        public class CreateTransferenciaDto
     {
-        
-        public DateTime DataHoraTrasacao { get; set; } 
-        public string? DescricaoTrasacao { get; set; }
-
-        public TipoTransacao TipoTransacao { get; set; }
+        public double Valor { get; set; }
+        public int ContaOrigemId { get; set; }
+        public int ContaDestinoId { get; set; }
     }
+
+
+    
+    public class CreateSaqueDto
+    {
+        public double Valor { get; set; }
+        public int ContaOrigemId { get; set; }
+    }
+
+    
+    public class CreateDepositoDto
+    {
+        public double Valor { get; set; }
+        public int ContaDestinoId { get; set; }
+    }
+
+
+
 }

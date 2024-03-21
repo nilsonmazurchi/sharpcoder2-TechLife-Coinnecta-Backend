@@ -6,8 +6,16 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Profiles
 {
     public class TransacaoProfile : Profile
     {
-        public TransacaoProfile() : base() {
-      CreateMap<CreateTransacaoDto, Transacao>();
-   }
+        public TransacaoProfile()
+        {
+            CreateMap<CreateTransferenciaDto, Transacao>()
+                .ForMember(dest => dest.TipoTransacao, opt => opt.MapFrom(src => TipoTransacao.Transferencia));
+
+            CreateMap<CreateSaqueDto, Transacao>()
+                .ForMember(dest => dest.TipoTransacao, opt => opt.MapFrom(src => TipoTransacao.Saque));
+
+            CreateMap<CreateDepositoDto, Transacao>()
+                .ForMember(dest => dest.TipoTransacao, opt => opt.MapFrom(src => TipoTransacao.Deposito));
+        }
     }
 }

@@ -9,19 +9,79 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model
 
         public TipoTransacao TipoTransacao { get; set; }
 
+        public double Valor { get; set; }
         public Transacao()
         {
             this.DataHoraTrasacao = DateTime.Now;
         }
 
 
-        public int ContaId { get; set; }
-        public Conta Conta { get; set; }
 
+        public int ContaOrigemId { get; set; }
+        public Conta ContaOrigem { get; set; }
 
+        public int? ContaDestinoId { get; set; }
+        public Conta ContaDestino { get; set; }
+
+        public void ProcessarTransacao()
+        {
+            switch (TipoTransacao)
+            {
+                case TipoTransacao.Transferencia:
+                    ProcessarTransferencia();
+                    break;
+                case TipoTransacao.Saque:
+                    ProcessarSaque();
+                    break;
+                case TipoTransacao.Deposito:
+                    ProcessarDeposito();
+                    break;
+                default:
+                    throw new InvalidOperationException("Tipo de transação não suportado.");
+            }
+        }
+
+        private void ProcessarTransferencia()
+        {
+            if (ContaOrigem != null && ContaDestino != null)
+            {
+                ContaOrigem.Saldo -= Valor;
+                ContaDestino.Saldo += Valor;
+            }
+            else
+            {
+                throw new InvalidOperationException("Conta de origem ou destino não encontrada.");
+            }
+        }
+
+        private void ProcessarSaque()
+        {
+            if (ContaOrigem != null)
+            {
+                ContaOrigem.Saldo -= Valor;
+            }
+            else
+            {
+                throw new InvalidOperationException("Conta de origem não encontrada.");
+            }
+        }
+
+        private void ProcessarDeposito()
+        {
+            if (ContaDestino != null)
+            {
+                ContaDestino.Saldo += Valor;
+            }
+            else
+            {
+                throw new InvalidOperationException("Conta de destino não encontrada.");
+            }
+        }
 
 
     }
+}
+
 
 
     public enum TipoTransacao
@@ -29,6 +89,9 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model
         Deposito,
         Saque,
         Transferencia,
-        Pagamento,
+        
     }
-}
+
+
+
+
