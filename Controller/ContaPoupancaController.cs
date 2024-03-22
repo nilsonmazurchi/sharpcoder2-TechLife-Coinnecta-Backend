@@ -49,8 +49,8 @@ public IActionResult CriarContaPoupanca(int usuarioId, [FromBody] CreateContaPou
     // Definir o UsuarioId e o número da conta corrente na nova conta corrente
     contaPoupanca.UsuarioId = usuarioId;
     contaPoupanca.NumeroConta = numeroContaPoupanca;
-    contaPoupanca.TipoConta = Domain.Model.TipoConta.Poupanca;
-    contaPoupanca.TaxaRendimento = 0.05;
+    contaPoupanca.TipoConta = Conta.Poupança;
+    contaPoupanca.Rendimento = 0.05;
     contaPoupanca.Saldo = AtualizaSaldoComTaxaRendimento(contaPoupanca);
     // Adicionar a nova conta corrente ao contexto
     
