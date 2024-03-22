@@ -1,7 +1,8 @@
 namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model;
 
-public class ContaPoupanca : Conta{
-   
-    public double LimiteCredito { get; set; }
+public class ContaPoupanca : Conta{   
+    
+    public virtual Usuario? Usuario { get; set; }
+    public int? UsuarioId{ get; set; }
 }
 

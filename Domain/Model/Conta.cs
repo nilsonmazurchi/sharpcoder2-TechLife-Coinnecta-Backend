@@ -13,7 +13,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model;
     public StatusConta StatusConta { get; set; }
     public double Saldo { get; set; } 
 
-
+public double TaxaRendimento { get; set; }  = 0.005;
     // public double AtualizarBalanco(double quantia)
     
    

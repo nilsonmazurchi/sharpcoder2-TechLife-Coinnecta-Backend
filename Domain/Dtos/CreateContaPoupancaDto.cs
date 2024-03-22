@@ -7,7 +7,8 @@ public class CreateContaPoupancaDto {
     //public TipoConta TipoConta { get; set; }
     //public StatusConta StatusConta { get; set; }
     public double Saldo { get; set; } = 0;
-    public double LimiteCredito { get; set; }
+    // public double LimiteCredito { get; set; }
+   
 }
 
 
