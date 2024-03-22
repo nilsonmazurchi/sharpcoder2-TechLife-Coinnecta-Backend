@@ -1,35 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model;
 
     public class Conta : Entity
     {
     public string? NumeroConta { get; set; }
-    public DateTime DataAbertura = DateTime.Now;
-    public TipoConta TipoConta { get; set; }
-    public StatusConta StatusConta { get; set; }
+    public DateOnly DataAbertura = new DateOnly(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+    public string? TipoConta { get; set; }
+    public string? StatusConta { get; set; }
     public double Saldo { get; set; } 
 
-public double TaxaRendimento { get; set; }  = 0.005;
-    // public double AtualizarBalanco(double quantia)
-    
-   
-}
+    public const string Ativo = "ativo";
+    public const string Inativo = "inativo";
 
-public enum TipoConta
-{
-    Corrente,
-    Poupanca
-}
+    public const string Corrente = "corrente";
+    public const string Poupança = "poupança";
 
-public enum StatusConta
-{
-    Ativa,
-    Inativa
-}
-
-
-
+    }
