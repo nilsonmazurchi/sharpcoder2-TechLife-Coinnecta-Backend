@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using sharpcoder2_TechLife_Coinnecta_Backend.Domain;
 
@@ -10,9 +11,11 @@ using sharpcoder2_TechLife_Coinnecta_Backend.Domain;
 namespace sharpcoder2_TechLife_Coinnecta_Backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240321033023_AdicionarTaxaRendimento")]
+    partial class AdicionarTaxaRendimento
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.3");
@@ -93,10 +96,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ContaDestinoId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ContaOrigemId")
+                    b.Property<int>("ContaId")
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("DataHoraTrasacao")
@@ -108,14 +108,9 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Migrations
                     b.Property<int>("TipoTransacao")
                         .HasColumnType("INTEGER");
 
-                    b.Property<double>("Valor")
-                        .HasColumnType("REAL");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ContaDestinoId");
-
-                    b.HasIndex("ContaOrigemId");
+                    b.HasIndex("ContaId");
 
                     b.ToTable("Transacaos");
                 });
@@ -148,9 +143,6 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Senha")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("StatusUsuario")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Telefone")
@@ -201,19 +193,13 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Migrations
 
             modelBuilder.Entity("sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model.Transacao", b =>
                 {
-                    b.HasOne("sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model.Conta", "ContaDestino")
+                    b.HasOne("sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model.Conta", "Conta")
                         .WithMany()
-                        .HasForeignKey("ContaDestinoId");
-
-                    b.HasOne("sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model.Conta", "ContaOrigem")
-                        .WithMany()
-                        .HasForeignKey("ContaOrigemId")
+                        .HasForeignKey("ContaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ContaDestino");
-
-                    b.Navigation("ContaOrigem");
+                    b.Navigation("Conta");
                 });
 
             modelBuilder.Entity("sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model.Usuario", b =>
