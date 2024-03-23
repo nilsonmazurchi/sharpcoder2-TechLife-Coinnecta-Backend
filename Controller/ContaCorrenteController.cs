@@ -22,46 +22,43 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
             _mapper = mapper;
 
         }
-
         [HttpPost("{usuarioId:int}")]
-public IActionResult CriarContaCorrente(int usuarioId, [FromBody] CreateContaCorrenteDto novaContaCorrente)
-{
-    var usuario = _appDbContext.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
-    if (usuario == null)
-    {
-        return NotFound("Usuário não encontrado.");
-    }
+        public async Task<IActionResult> CriarContaCorrente(int usuarioId, [FromBody] CreateContaCorrenteDto novaContaCorrente)
+        {
+            var usuario = _appDbContext.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
+            if (usuario == null)
+            {
+                return NotFound("Usuário não encontrado.");
+            }
 
-    // Verifica se o usuário já possui uma conta corrente
-    var usuarioPossuiContaCorrente = _appDbContext.ContaCorrentes.Any(cc => cc.UsuarioId == usuarioId);
-    if (usuarioPossuiContaCorrente)
-    {
-        return BadRequest("Usuário já possui uma conta corrente.");
-    }
+            var usuarioPossuiContaCorrente = _appDbContext.ContaCorrentes.Any(cc => cc.UsuarioId == usuarioId);
+            if (usuarioPossuiContaCorrente)
+            {
+                return BadRequest("Usuário já possui uma conta corrente.");
+            }
 
-    string numeroContaCorrente;
-    do
-    {
-        numeroContaCorrente = GerarNumeroContaCorrente();
-    } while (_appDbContext.ContaCorrentes.Any(cc => cc.NumeroConta == numeroContaCorrente));
+            string numeroContaCorrente;
+            do
+            {
+                numeroContaCorrente = GerarNumeroContaCorrente();
+            } while (_appDbContext.ContaCorrentes.Any(cc => cc.NumeroConta == numeroContaCorrente));
 
-    Console.WriteLine($"Número da conta corrente gerado: {numeroContaCorrente}");
+            Console.WriteLine($"Número da conta corrente gerado: {numeroContaCorrente}");
 
-    var novaConta = _mapper.Map<ContaCorrente>(novaContaCorrente);
+            var novaConta = _mapper.Map<ContaCorrente>(novaContaCorrente);
 
-    novaConta.UsuarioId = usuarioId;
-    novaConta.NumeroConta = numeroContaCorrente;
-    novaConta.LimiteCredito = 100.00;
-    novaConta.StatusConta = Conta.Ativo;
-    novaConta.TipoConta = Conta.Corrente;
-    novaConta.Saldo = 0.00;
+            novaConta.UsuarioId = usuarioId;
+            novaConta.NumeroConta = numeroContaCorrente;
+            novaConta.LimiteCredito = 100.00;
+            novaConta.StatusConta = Conta.Ativo;
+            novaConta.TipoConta = Conta.Corrente;
+            novaConta.Saldo = 0.00;
 
-    var result = _appDbContext.ContaCorrentes.Add(novaConta);
+            await _appDbContext.ContaCorrentes.AddAsync(novaConta);
+            await _appDbContext.SaveChangesAsync();
 
-    _appDbContext.SaveChanges();
-
-    return CreatedAtAction(nameof(PegarPorId), new { id = novaConta.Id }, novaConta);
-}
+            return CreatedAtAction(nameof(PegarPorId), new { id = novaConta.Id }, novaConta);
+        }
 
 
         private string GerarNumeroContaCorrente()
@@ -73,9 +70,9 @@ public IActionResult CriarContaCorrente(int usuarioId, [FromBody] CreateContaCor
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult PegarPorId(int id)
+        public async Task<IActionResult> PegarPorId(int id)
         {
-            var conta = _appDbContext.ContaCorrentes.Find(id);
+            var conta = await _appDbContext.ContaCorrentes.FindAsync(id);
 
             if (conta == null)
                 return NotFound();
@@ -84,7 +81,7 @@ public IActionResult CriarContaCorrente(int usuarioId, [FromBody] CreateContaCor
         }
 
         [HttpPut("{id:int}")]
-        public IActionResult AtualizarContaCorrente(int id, [FromBody] UpdateContaCorrenteDto contaCorrenteAtualizada)
+        public async Task<IActionResult> AtualizarContaCorrente(int id, [FromBody] UpdateContaCorrenteDto contaCorrenteAtualizada)
         {
             var contaCorrente = _appDbContext.ContaCorrentes.FirstOrDefault(cc => cc.Id == id);
 
@@ -105,10 +102,9 @@ public IActionResult CriarContaCorrente(int usuarioId, [FromBody] CreateContaCor
 
             contaCorrente.Saldo = contaCorrenteAtualizada.Saldo;
 
-            _appDbContext.SaveChanges();
+            await _appDbContext.SaveChangesAsync();
 
             return Ok(contaCorrente);
         }
-
     }
 }
