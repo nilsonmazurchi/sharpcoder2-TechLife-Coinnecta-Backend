@@ -57,6 +57,12 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Registro do HttpClient
+builder.Services.AddHttpClient();
+
+// Registro do RendimentoServico
+builder.Services.AddScoped<RendimentoServico>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
