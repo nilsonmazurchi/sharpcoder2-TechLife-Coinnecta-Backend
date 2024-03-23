@@ -75,6 +75,98 @@ public IActionResult Transferir(CreateTransferenciaDto transferenciaDto)
     }
 }
 
+[HttpPost("deposito")]
+public IActionResult Depositar(CreateDepositoDto depositoDto)
+{
+    try
+    {
+        // Verifica se a conta de destino existe no banco de dados
+        var contaDestino = _appDbContext.ContaCorrentes.FirstOrDefault(c => c.Id == depositoDto.ContaDestinoId);
+        
+        if (contaDestino == null)
+        {
+            return StatusCode(400, "Conta de destino não encontrada.");
+        }
+
+        // Verifica se o valor do depósito é válido
+        if (depositoDto.Valor <= 0)
+        {
+            return StatusCode(400, "O valor do depósito deve ser maior que zero.");
+        }
+
+        // Processa o depósito
+        contaDestino.Saldo += depositoDto.Valor;
+
+        // Cria a transação
+        var transacao = new Transacao
+        {
+            DataHoraTrasacao = DateTime.Now,
+            TipoTransacao = TipoTransacao.Deposito,
+            Valor = depositoDto.Valor,
+            ContaDestinoId = depositoDto.ContaDestinoId
+        };
+
+        // Adiciona a transação ao contexto e salva no banco de dados
+        _appDbContext.Transacaos.Add(transacao);
+        _appDbContext.SaveChanges();
+        
+        return CreatedAtAction(nameof(ObterTransacaoPorId), new { id = transacao.Id }, transacao);
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"Erro ao processar depósito: {ex.Message}");
+    }
+}
+
+[HttpPost("saque")]
+public IActionResult Sacar(CreateSaqueDto saqueDto)
+{
+    try
+    {
+        // Verifica se a conta de origem existe no banco de dados
+        var contaOrigem = _appDbContext.ContaCorrentes.FirstOrDefault(c => c.Id == saqueDto.ContaOrigemId);
+        
+        if (contaOrigem == null)
+        {
+            return StatusCode(400, "Conta de origem não encontrada.");
+        }
+
+        // Verifica se o valor do saque é válido
+        if (saqueDto.Valor <= 0)
+        {
+            return StatusCode(400, "O valor do saque deve ser maior que zero.");
+        }
+
+        // Verifica se a conta tem saldo suficiente para o saque
+        if (contaOrigem.Saldo < saqueDto.Valor)
+        {
+            return StatusCode(400, "Saldo insuficiente na conta de origem.");
+        }
+
+        // Processa o saque
+        contaOrigem.Saldo -= saqueDto.Valor;
+
+        // Cria a transação de saque
+        var transacao = new Transacao
+        {
+            DataHoraTrasacao = DateTime.Now,
+            TipoTransacao = TipoTransacao.Saque,
+            Valor = saqueDto.Valor,
+            ContaOrigemId = saqueDto.ContaOrigemId
+        };
+
+        // Adiciona a transação ao contexto e salva no banco de dados
+        _appDbContext.Transacaos.Add(transacao);
+        _appDbContext.SaveChanges();
+        
+        return CreatedAtAction(nameof(ObterTransacaoPorId), new { id = transacao.Id }, transacao);
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, $"Erro ao processar saque: {ex.Message}");
+    }
+}
+
 [HttpPut("{id}")]
 public IActionResult AtualizarTransacao(int id, UpdateTransacaoDto transacaoDto)
 {
@@ -97,24 +189,24 @@ public IActionResult AtualizarTransacao(int id, UpdateTransacaoDto transacaoDto)
 }
 
 
-[HttpDelete("{id}")]
-public IActionResult ExcluirTransacao(int id)
-{
-    try
-    {
-        var transacao = _appDbContext.Transacaos.FirstOrDefault(t => t.Id == id);
-        if (transacao == null)
-            return NotFound("Transação não encontrada");
+// [HttpDelete("{id}")]
+// public IActionResult ExcluirTransacao(int id)
+// {
+//     try
+//     {
+//         var transacao = _appDbContext.Transacaos.FirstOrDefault(t => t.Id == id);
+//         if (transacao == null)
+//             return NotFound("Transação não encontrada");
 
-        _appDbContext.Transacaos.Remove(transacao);
-        _appDbContext.SaveChanges();
-        return NoContent();
-    }
-    catch (Exception ex)
-    {
-        return StatusCode(500, $"Erro ao excluir transação: {ex.Message}");
-    }
-}
+//         _appDbContext.Transacaos.Remove(transacao);
+//         _appDbContext.SaveChanges();
+//         return NoContent();
+//     }
+//     catch (Exception ex)
+//     {
+//         return StatusCode(500, $"Erro ao excluir transação: {ex.Message}");
+//     }
+// }
 
 [HttpGet("{id}")]
 public IActionResult ObterTransacaoPorId(int id)
