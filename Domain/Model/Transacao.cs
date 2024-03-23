@@ -17,42 +17,42 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model
 
 
 
-        public int ContaOrigemId { get; set; }
-        public ContaCorrente? ContaOrigem { get; set; }
+        public int? ContaOrigemId { get; set; }
+        public virtual ContaCorrente? ContaOrigem { get; set; }
 
-        public int ContaDestinoId { get; set; }
-        public ContaCorrente? ContaDestino { get; set; }
+        public int? ContaDestinoId { get; set; }
+        public virtual ContaCorrente? ContaDestino { get; set; }
 
-        public void ProcessarTransacao()
-        {
-            switch (TipoTransacao)
-            {
-                case TipoTransacao.Transferencia:
-                    ProcessarTransferencia();
-                    break;
-                case TipoTransacao.Saque:
-                    ProcessarSaque();
-                    break;
-                case TipoTransacao.Deposito:
-                    ProcessarDeposito();
-                    break;
-                default:
-                    throw new InvalidOperationException("Tipo de transação não suportado.");
-            }
-        }
+        // public void ProcessarTransacao()
+        // {
+        //     switch (TipoTransacao)
+        //     {
+        //         case TipoTransacao.Transferencia:
+        //             ProcessarTransferencia();
+        //             break;
+        //         case TipoTransacao.Saque:
+        //             ProcessarSaque();
+        //             break;
+        //         case TipoTransacao.Deposito:
+        //             ProcessarDeposito();
+        //             break;
+        //         default:
+        //             throw new InvalidOperationException("Tipo de transação não suportado.");
+        //     }
+        // }
 
-        private void ProcessarTransferencia()
-        {
-            if (ContaOrigem != null && ContaDestino != null)
-            {
-                ContaOrigem.Saldo -= Valor;
-                ContaDestino.Saldo += Valor;
-            }
-            else
-            {
-                throw new InvalidOperationException("Conta de origem ou destino não encontrada.");
-            }
-        }
+        // private void ProcessarTransferencia()
+        // {
+        //     if (ContaOrigem?.NumeroConta != null && ContaDestino?.NumeroConta != null)
+        //     {
+        //         ContaOrigem.Saldo -= Valor;
+        //         ContaDestino.Saldo += Valor;
+        //     }
+        //     else
+        //     {
+        //         throw new InvalidOperationException("Conta de origem ou destino não encontrada.");
+        //     }
+        // }
 
         private void ProcessarSaque()
         {

@@ -13,8 +13,13 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos
 
     public class CreateTransferenciaDto : TransacaoDto
     {
-        public int ContaOrigemId { get; set; }
-        public int ContaDestinoId { get; set; }
+        public int? ContaOrigemId { get; set; }
+        
+        public int? ContaDestinoId { get; set; }
+        
+
+        
+    
     }
 
     public class CreateSaqueDto : TransacaoDto

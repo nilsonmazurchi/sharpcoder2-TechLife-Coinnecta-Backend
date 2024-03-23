@@ -1,5 +1,3 @@
-
-
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using sharpcoder2_TechLife_Coinnecta_Backend.Domain;
@@ -31,52 +29,49 @@ public IActionResult Transferir(CreateTransferenciaDto transferenciaDto)
 {
     try
     {
+        // Verifica se as contas de origem e destino existem no banco de dados
+        var contaOrigem = _appDbContext.ContaCorrentes.FirstOrDefault(c => c.Id == transferenciaDto.ContaOrigemId);
+        var contaDestino = _appDbContext.ContaCorrentes.FirstOrDefault(c => c.Id == transferenciaDto.ContaDestinoId);
+        
+        if (contaOrigem == null || contaDestino == null)
+        {
+            return StatusCode(400, "Conta de origem ou destino não encontrada.");
+        }
+
+        // Verifica se a conta de origem tem saldo suficiente
+        if (contaOrigem.Saldo < transferenciaDto.Valor)
+        {
+            return StatusCode(400, "Saldo insuficiente na conta de origem.");
+        }
+        
+        // Processa a transferência
+        if (contaOrigem.NumeroConta != null && contaDestino.NumeroConta != null)
+        {
+            contaOrigem.Saldo -= transferenciaDto.Valor;
+            contaDestino.Saldo += transferenciaDto.Valor;
+        }
+        else
+        {
+            throw new InvalidOperationException("Conta de origem ou destino não encontrada.");
+        }
+
+        // Cria a transação
         var transacao = _mapper.Map<Transacao>(transferenciaDto);
         transacao.TipoTransacao = TipoTransacao.Transferencia;
-        transacao.ProcessarTransacao();
+        transacao.ContaOrigemId = transferenciaDto.ContaOrigemId;
+        transacao.ContaDestinoId = transferenciaDto.ContaDestinoId;
+    
+        
+
+        // Adiciona a transação ao contexto e salva no banco de dados
         _appDbContext.Transacaos.Add(transacao);
         _appDbContext.SaveChanges();
+        
         return CreatedAtAction(nameof(ObterTransacaoPorId), new { id = transacao.Id }, transacao);
     }
     catch (Exception ex)
     {
         return StatusCode(500, $"Erro ao processar transferência: {ex.Message}");
-    }
-}
-
-[HttpPost("saque")]
-public IActionResult Sacar(CreateSaqueDto saqueDto)
-{
-    try
-    {
-        var transacao = _mapper.Map<Transacao>(saqueDto);
-        transacao.TipoTransacao = TipoTransacao.Saque;
-        transacao.ProcessarTransacao();
-        _appDbContext.Transacaos.Add(transacao);
-        _appDbContext.SaveChanges();
-        return CreatedAtAction(nameof(ObterTransacaoPorId), new { id = transacao.Id }, transacao);
-    }
-    catch (Exception ex)
-    {
-        return StatusCode(500, $"Erro ao processar saque: {ex.Message}");
-    }
-}
-
-[HttpPost("deposito")]
-public IActionResult Depositar(CreateDepositoDto depositoDto)
-{
-    try
-    {
-        var transacao = _mapper.Map<Transacao>(depositoDto);
-        transacao.TipoTransacao = TipoTransacao.Deposito;
-        transacao.ProcessarTransacao();
-        _appDbContext.Transacaos.Add(transacao);
-        _appDbContext.SaveChanges();
-        return CreatedAtAction(nameof(ObterTransacaoPorId), new { id = transacao.Id }, transacao);
-    }
-    catch (Exception ex)
-    {
-        return StatusCode(500, $"Erro ao processar depósito: {ex.Message}");
     }
 }
 
@@ -89,7 +84,6 @@ public IActionResult AtualizarTransacao(int id, UpdateTransacaoDto transacaoDto)
         if (transacaoExistente == null)
             return NotFound("Transação não encontrada");
 
-        transacaoExistente.Valor = transacaoDto.Valor;
         transacaoExistente.DescricaoTrasacao = transacaoDto.DescricaoTrasacao;
 
         _appDbContext.SaveChanges();
