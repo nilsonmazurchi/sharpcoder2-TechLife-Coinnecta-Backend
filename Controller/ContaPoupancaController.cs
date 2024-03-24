@@ -15,89 +15,99 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
     {
         private readonly AppDbContext _appDbContext;
         private readonly IMapper _mapper;
-        
 
-        public ContaPoupancaController(AppDbContext appDbContext, IMapper mapper )
+
+        public ContaPoupancaController(AppDbContext appDbContext, IMapper mapper)
         {
             _appDbContext = appDbContext;
             _mapper = mapper;
-    
+
         }
 
-        [HttpPost("{usuarioId:int}")]
-public IActionResult CriarContaPoupanca(int usuarioId, [FromBody] CreateContaPoupancaDto novaContaPoupanca)
-{
-    // Verificar se o usuário existe
-    var usuario = _appDbContext.Usuarios.FirstOrDefault(u => u.Id == usuarioId);
-    if (usuario == null)
-    {
-        return NotFound("Usuário não encontrado.");
-    }
+         [HttpPost("{usuarioId:int}")]
+        public async Task<IActionResult> CriarContaPoupanca(int usuarioId, [FromBody] CreateContaPoupancaDto novaContaPoupanca)
+        {
+            var usuario = await _appDbContext.Usuarios.FirstOrDefaultAsync(u => u.Id == usuarioId);
+            if (usuario == null)
+            {
+                return NotFound("Usuário não encontrado.");
+            }
 
-    // Gerar um número de conta corrente único com seis dígitos
-    string numeroContaPoupanca;
-    do
-    {
-        numeroContaPoupanca = GerarNumeroContaPoupanca();
-    } while (_appDbContext.ContaPoupancas.Any(cc => cc.NumeroConta == numeroContaPoupanca));
+            var usuarioPossuiContaPoupanca = await _appDbContext.ContaPoupancas.AnyAsync(cp => cp.UsuarioId == usuarioId);
+            if (usuarioPossuiContaPoupanca)
+            {
+                return BadRequest("Usuário já possui uma conta poupança.");
+            }
 
-    Console.WriteLine($"Número da conta corrente gerado: {numeroContaPoupanca}");
+            string numeroContaPoupanca;
+            do
+            {
+                numeroContaPoupanca = GerarNumeroContaPoupanca();
+            } while (await _appDbContext.ContaPoupancas.AnyAsync(cc => cc.NumeroConta == numeroContaPoupanca));
 
-    // Criar a conta corrente para o usuário
-    var contaPoupanca = _mapper.Map<ContaPoupanca>(novaContaPoupanca);
-    
-    // Definir o UsuarioId e o número da conta corrente na nova conta corrente
-    contaPoupanca.UsuarioId = usuarioId;
-    contaPoupanca.NumeroConta = numeroContaPoupanca;
-    contaPoupanca.TipoConta = Conta.Poupança;
-    contaPoupanca.Rendimento = 0.05;
-    contaPoupanca.Saldo = AtualizaSaldoComTaxaRendimento(contaPoupanca);
-    // Adicionar a nova conta corrente ao contexto
-    
-     _appDbContext.ContaPoupancas.Add(contaPoupanca); 
+            Console.WriteLine($"Número da conta poupança gerado: {numeroContaPoupanca}");
 
-    // Salvar as alterações no banco de dados
-    _appDbContext.SaveChanges();
+            var contaPoupanca = _mapper.Map<ContaPoupanca>(novaContaPoupanca);
 
-    string tableName = "transacoes" + contaPoupanca.NumeroConta;
+            contaPoupanca.UsuarioId = usuarioId;
+            contaPoupanca.NumeroConta = numeroContaPoupanca;
+            contaPoupanca.TipoConta = Conta.Poupança;
+            contaPoupanca.StatusConta = Conta.Ativo;
 
-      return CreatedAtAction(nameof(PegarPorId), new { id = contaPoupanca.Id }, contaPoupanca);
-    }
+            _appDbContext.ContaPoupancas.Add(contaPoupanca);
+            await _appDbContext.SaveChangesAsync();
 
-private double AtualizaSaldoComTaxaRendimento(ContaPoupanca contaPoupanca) {
-    double saldoInicial = contaPoupanca.Saldo; // Saldo inicial da conta
-    double taxaRendimentoMensal = 0.05 / 12; // Taxa de rendimento mensal (5% ao ano dividido por 12 meses)
-    int dias = 30; // Número de dias que queremos calcular
+            string tableName = "poupancaRendimento" + contaPoupanca.NumeroConta;
+            string createTableSql = $@"
+            CREATE TABLE IF NOT EXISTS {tableName} (
+            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+            Dia INTEGER NOT NULL,
+            Rendimento DOUBLE NOT NULL,
+            ValorRendimento REAL NOT NULL,
+            ValorFinal REAL NOT NULL,
+            ContaPoupancaId INT NOT NULL,
+            FOREIGN KEY (ContaPoupancaId) REFERENCES ContaPoupanca(Id)
+            )";
 
-    // Calcula a taxa de rendimento diária com base na taxa mensal
-    double taxaRendimentoDiaria = Math.Pow(1 + taxaRendimentoMensal, 1.0 / 30) - 1;
+            await _appDbContext.Database.ExecuteSqlRawAsync(createTableSql);
 
-    // Calcula o saldo final após o período de dias especificado
-    double saldoFinal = saldoInicial * Math.Pow(1 + taxaRendimentoDiaria, dias);
+            await _appDbContext.SaveChangesAsync();
 
-    saldoFinal = Math.Round(saldoFinal, 2);
+            return CreatedAtAction(nameof(PegarPorId), new { id = contaPoupanca.Id }, contaPoupanca);
+        }
 
-    return saldoFinal;
-}
 
-    private string GerarNumeroContaPoupanca()
-    {
-    // Gerar um número de conta popanca com seis dígitos
-    Random random = new Random();
-    int numero = random.Next(100, 999); // Garante que o número tenha seis dígitos
-    return numero.ToString();
-    }
+        private double AtualizaSaldoComTaxaRendimento(ContaPoupanca contaPoupanca)
+        {
+            double saldoInicial = contaPoupanca.Saldo; 
+            double taxaRendimentoMensal = 0.05 / 12; 
+            int dias = 30; 
+            
+            double taxaRendimentoDiaria = Math.Pow(1 + taxaRendimentoMensal, 1.0 / 30) - 1;
+            
+            double saldoFinal = saldoInicial * Math.Pow(1 + taxaRendimentoDiaria, dias);
+
+            saldoFinal = Math.Round(saldoFinal, 2);
+
+            return saldoFinal;
+        }
+
+        private string GerarNumeroContaPoupanca()
+        {
+           
+            Random random = new Random();
+            int numero = random.Next(100000000, 999999999); 
+            return numero.ToString();
+        }
 
         [HttpGet("{id:int}")]
-        public IActionResult PegarPorId(int id)
+        public async Task<IActionResult> PegarPorId(int id)
         {
-            var conta = _appDbContext.ContaPoupancas.Find(id);
-
+            var conta = await _appDbContext.ContaPoupancas.FindAsync(id);
             if (conta == null)
                 return NotFound();
 
             return Ok(conta);
         }
-
     }
 }

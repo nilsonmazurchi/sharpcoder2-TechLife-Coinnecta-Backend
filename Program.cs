@@ -8,8 +8,7 @@ using sharpcoder2_TechLife_Coinnecta_Backend.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -34,6 +33,7 @@ builder.Services.AddCors(options =>
                    .AllowAnyMethod();
         });
 });
+
 
 // Configuração da autenticação JWT
 // var jwtSettings = builder.Configuration.GetSection("JwtSettings");
@@ -60,9 +60,14 @@ builder.Services.AddCors(options =>
 //     };
 // });
 
+builder.Services.AddHttpClient();
+
+
+builder.Services.AddScoped<RendimentoServico>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
