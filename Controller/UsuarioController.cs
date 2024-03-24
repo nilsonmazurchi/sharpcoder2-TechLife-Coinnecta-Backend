@@ -11,7 +11,6 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
 {
     [ApiController]
     [Route("usuarios")]
-    //[Authorize]
     public class UsuarioController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
@@ -24,12 +23,14 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult> PegarTodos()
         {
             return Ok(await _appDbContext.Usuarios.ToListAsync());
         }
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> PegarPorId(int id)
         {
             var buscaUsuario = await _appDbContext.Usuarios.FindAsync(id);
@@ -41,6 +42,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Cadastrar([FromBody] CreateUsuarioDto novoUsuario)
         {
             var senhaCriptografada = BCrypt.Net.BCrypt.HashPassword(novoUsuario.Senha);
@@ -58,6 +60,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> Atualizar(int id, [FromBody] UpdateUsuarioDto usuarioAtualizado)
         {
             if (id <= 0)
@@ -90,6 +93,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
         }
 
         [HttpGet("nome")]
+        [Authorize]
         public string GetNome(string cpf)
         {
             #pragma warning disable
@@ -99,6 +103,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
         }
 
         [HttpGet("senha")]
+        [Authorize]
         public string GetSenha(string cpf)
         {
             var usuario = _appDbContext.Usuarios.FirstOrDefault(u => u.Cpf == cpf);
@@ -106,6 +111,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
         }
 
         [HttpGet("senha-cnpj")]
+        [Authorize]
         public string GetSenhaCNPJ(string cnpj)
         {
             var usuario = _appDbContext.Usuarios.FirstOrDefault(u => u.Cnpj == cnpj);
@@ -113,6 +119,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
         }
 
         [HttpGet("nome-cnpj")]
+        [Authorize]
         public string GetNomeCNPJ(string cnpj)
         {
             var usuario = _appDbContext.Usuarios.FirstOrDefault(u => u.Cnpj == cnpj);
@@ -127,18 +134,21 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
         // }
 
         [HttpGet("checar-email")]
+        [Authorize]
         public bool ChecarEmailUsuarioExiste(string email)
         {
             return _appDbContext.Usuarios.Any(u => u.Email == email);
         }
 
         [HttpGet("checar-cnpj")]
+        [Authorize]
         public bool ChecarCNPJUsuarioExiste(string cnpj)
         {
             return _appDbContext.Usuarios.Any(u => u.Cnpj == cnpj);
         }
 
         [HttpGet("checar-cpf")]
+        [AllowAnonymous]
         public bool ChecarCPFUsuarioExiste(string cpf)
         {
             return _appDbContext.Usuarios.Any(u => u.Cpf == cpf);
