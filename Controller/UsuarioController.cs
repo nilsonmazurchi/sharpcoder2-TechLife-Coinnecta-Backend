@@ -4,6 +4,7 @@ using sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos.Usuario;
 using sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller

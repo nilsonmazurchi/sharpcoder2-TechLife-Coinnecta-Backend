@@ -26,32 +26,53 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
 
 
         [HttpPost("login")]
-        [AllowAnonymous] // Permite que todos acessem este endpoint sem autenticação
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginDto request)
         {
-            var usuario = _appDbContext.Usuarios.FirstOrDefault(x => x.Cpf == request.CPF);
-            var senha = usuario?.Senha;
+            var usuario = await Task.FromResult(_appDbContext.Usuarios.FirstOrDefault(x => x.Cpf == request.CPF));
+
+            if (usuario == null)
+                return BadRequest(new { message = "CPF ou senha inválidos" });
+
+            var senha = usuario.Senha;
             bool senhaCorreta = senha != null ? BCrypt.Net.BCrypt.Verify(request.Senha, senha) : false;
 
             if (!senhaCorreta)
                 return BadRequest(new { message = "CPF ou senha inválidos" });
 
-            var usuarioId = usuario?.Id;
+            var usuarioId = usuario.Id;
 
-            var token = GenerateToken(usuarioId.ToString());
+            string token = string.Empty;
+            if (usuarioId != 0)
+            {
+                token = GenerateToken(usuarioId.ToString());
+            }
+            else
+            {
+                return BadRequest(new { message = "Não foi possível gerar o token, o usuário é nulo" });
+            }
 
             return Ok(new { token });
         }
 
+
+
         private string GenerateToken(string userId)
         {
+            var secretKey = _configuration["jwt:secretkey"];
+
+            if (string.IsNullOrEmpty(secretKey))
+            {
+                throw new InvalidOperationException("A chave secreta JWT não está configurada corretamente.");
+            }
+
             var claims = new[]
             {
-                new Claim("id", userId),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            };
+        new Claim("id", userId),
+        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+    };
 
-            var privateKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["jwt:secretkey"]));
+            var privateKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
             var credentials = new SigningCredentials(privateKey, SecurityAlgorithms.HmacSha256);
             var expiration = DateTime.UtcNow.AddMinutes(10);
@@ -66,6 +87,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
 
             return "Bearer " + new JwtSecurityTokenHandler().WriteToken(token);
         }
+
 
         // private string GenerateJwtToken(string userId)
         // {
