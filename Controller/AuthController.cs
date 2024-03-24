@@ -41,7 +41,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
                 return BadRequest(new { message = "CPF ou senha inválidos" });
 
             var usuarioId = usuario.Id;
-
+            var usuarioCpf = usuario.Cpf;
             string token = string.Empty;
             if (usuarioId != 0)
             {
@@ -52,7 +52,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
                 return BadRequest(new { message = "Não foi possível gerar o token, o usuário é nulo" });
             }
 
-            return Ok(new { token });
+            return Ok(new { token, userId = usuarioId, userCpf = usuarioCpf });
         }
 
 

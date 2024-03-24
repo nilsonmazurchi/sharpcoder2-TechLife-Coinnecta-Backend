@@ -54,7 +54,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
             var result = await _appDbContext.Usuarios.AddAsync(usuarioParaCadastro);
             await _appDbContext.SaveChangesAsync();
             var usuarioSalvo = result.Entity;
-           
+
             return CreatedAtAction(nameof(PegarPorId), new { usuarioSalvo.Id }, usuarioSalvo);
         }
 
@@ -92,13 +92,15 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
         }
 
         [HttpGet("nome")]
-        [Authorize]
-        public string GetNome(string cpf)
+        [AllowAnonymous]
+        public IActionResult GetNome(string cpf)
         {
-            #pragma warning disable
             var usuario = _appDbContext.Usuarios.FirstOrDefault(u => u.Cpf == cpf);
-            return usuario?.Nome;
 
+            if (usuario == null)
+                return NotFound();
+
+            return Ok(new { Nome = usuario.Nome });
         }
 
         [HttpGet("senha")]
@@ -123,7 +125,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
         {
             var usuario = _appDbContext.Usuarios.FirstOrDefault(u => u.Cnpj == cnpj);
             return usuario?.Nome;
-        }      
+        }
 
         [HttpGet("checar-email")]
         [Authorize]
