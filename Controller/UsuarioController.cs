@@ -3,15 +3,13 @@ using sharpcoder2_TechLife_Coinnecta_Backend.Domain;
 using sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos.Usuario;
 using sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
 {
     [ApiController]
-    [Route("usuarios")]
-    //[Authorize]
+    [Route("usuarios")]   
     public class UsuarioController : ControllerBase
     {
         private readonly AppDbContext _appDbContext;
@@ -52,8 +50,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
             var result = await _appDbContext.Usuarios.AddAsync(usuarioParaCadastro);
             await _appDbContext.SaveChangesAsync();
             var usuarioSalvo = result.Entity;
-
-            // status 201 + corpo vazio + header com redirecionamento
+           
             return CreatedAtAction(nameof(PegarPorId), new { usuarioSalvo.Id }, usuarioSalvo);
         }
 
@@ -117,14 +114,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
         {
             var usuario = _appDbContext.Usuarios.FirstOrDefault(u => u.Cnpj == cnpj);
             return usuario?.Nome;
-        }
-
-        // [HttpGet("usuario-logado")]
-        // public IActionResult GetUsuarioLogado(string cpf)
-        // {
-        //     // Lógica para obter o usuário logado
-        //     // Se estiver autenticado, retorne o usuário logado, caso contrário, retorne null
-        // }
+        }      
 
         [HttpGet("checar-email")]
         public bool ChecarEmailUsuarioExiste(string email)

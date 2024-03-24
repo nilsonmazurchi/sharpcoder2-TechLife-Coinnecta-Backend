@@ -63,9 +63,9 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
 
         private string GerarNumeroContaCorrente()
         {
-            // Gerar um número de conta corrente com seis dígitos
+           
             Random random = new Random();
-            int numero = random.Next(100000, 999999); // Garante que o número tenha seis dígitos
+            int numero = random.Next(100000, 999999);
             return numero.ToString();
         }
 

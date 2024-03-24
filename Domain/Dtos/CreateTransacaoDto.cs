@@ -16,7 +16,6 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos
         public int? ContaOrigemId { get; set; }
         
         public int? ContaDestinoId { get; set; }
-        
 
         
     
@@ -25,6 +24,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos
     public class CreateSaqueDto : TransacaoDto
     {
         public int ContaOrigemId { get; set; }
+        
     }
 
     public class CreateDepositoDto : TransacaoDto

@@ -10,7 +10,6 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Domain.Profiles
         {
             // Mapeamento para Transferência
             CreateMap<CreateTransferenciaDto, Transacao>()
-                .ForMember(dest => dest.TipoTransacao, opt => opt.MapFrom(src => TipoTransacao.Transferencia))
                 .ForMember(dest => dest.ContaOrigemId, opt => opt.MapFrom(src => src.ContaOrigemId))
                 .ForMember(dest => dest.ContaDestinoId, opt => opt.MapFrom(src => src.ContaDestinoId))
                 .ForMember(dest => dest.Valor, opt => opt.MapFrom(src => src.Valor));
