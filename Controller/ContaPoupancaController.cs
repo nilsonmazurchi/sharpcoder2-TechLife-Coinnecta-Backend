@@ -79,14 +79,12 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
 
         private double AtualizaSaldoComTaxaRendimento(ContaPoupanca contaPoupanca)
         {
-            double saldoInicial = contaPoupanca.Saldo; // Saldo inicial da conta
-            double taxaRendimentoMensal = 0.05 / 12; // Taxa de rendimento mensal (5% ao ano dividido por 12 meses)
-            int dias = 30; // Número de dias que queremos calcular
-
-            // Calcula a taxa de rendimento diária com base na taxa mensal
+            double saldoInicial = contaPoupanca.Saldo; 
+            double taxaRendimentoMensal = 0.05 / 12; 
+            int dias = 30; 
+            
             double taxaRendimentoDiaria = Math.Pow(1 + taxaRendimentoMensal, 1.0 / 30) - 1;
-
-            // Calcula o saldo final após o período de dias especificado
+            
             double saldoFinal = saldoInicial * Math.Pow(1 + taxaRendimentoDiaria, dias);
 
             saldoFinal = Math.Round(saldoFinal, 2);
@@ -96,9 +94,9 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
 
         private string GerarNumeroContaPoupanca()
         {
-            // Gerar um número de conta popanca com seis dígitos
+           
             Random random = new Random();
-            int numero = random.Next(100000000, 999999999); // Garante que o número tenha seis dígitos
+            int numero = random.Next(100000000, 999999999); 
             return numero.ToString();
         }
 

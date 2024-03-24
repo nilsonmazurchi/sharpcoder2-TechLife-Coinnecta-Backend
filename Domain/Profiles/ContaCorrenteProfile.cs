@@ -8,7 +8,6 @@ public class ContaCorrenteProfile : Profile
 {
    public ContaCorrenteProfile() : base() {
       CreateMap<CreateContaCorrenteDto, ContaCorrente>();
-      CreateMap<UpdateContaCorrenteDto, ContaCorrente>();
    }
 }
 

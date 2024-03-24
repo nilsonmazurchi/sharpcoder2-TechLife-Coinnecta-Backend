@@ -6,8 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -32,7 +31,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-// Configuração da autenticação JWT
+
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var key = Encoding.UTF8.GetBytes(jwtSettings["Secret"]);
 
@@ -57,15 +56,15 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Registro do HttpClient
+
 builder.Services.AddHttpClient();
 
-// Registro do RendimentoServico
+
 builder.Services.AddScoped<RendimentoServico>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
