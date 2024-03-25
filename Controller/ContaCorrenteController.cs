@@ -3,6 +3,7 @@ using sharpcoder2_TechLife_Coinnecta_Backend.Domain;
 using sharpcoder2_TechLife_Coinnecta_Backend.Domain.Dtos;
 using sharpcoder2_TechLife_Coinnecta_Backend.Domain.Model;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 
 
@@ -63,7 +64,7 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
 
         private string GerarNumeroContaCorrente()
         {
-           
+
             Random random = new Random();
             int numero = random.Next(100000, 999999);
             return numero.ToString();
@@ -78,6 +79,28 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
                 return NotFound();
 
             return Ok(conta);
+        }
+
+        [HttpGet("usuario/{usuarioId:int}")]
+        public async Task<IActionResult> PegarContaPorUsuarioId(int usuarioId)
+        {
+            var conta = await _appDbContext.ContaCorrentes.FirstOrDefaultAsync(cc => cc.UsuarioId == usuarioId);
+
+            if (conta == null)
+                return NotFound("Conta corrente não encontrada para o usuário.");
+
+            return Ok(conta);
+        }
+
+        [HttpGet("{id:int}/saldo")]
+        public async Task<IActionResult> PegarSaldoPorId(int id)
+        {
+            var conta = await _appDbContext.ContaCorrentes.FindAsync(id);
+
+            if (conta == null)
+                return NotFound();
+
+            return Ok(new { saldo = conta.Saldo }); // Retorne apenas o saldo da conta
         }
 
         [HttpPut("{id:int}")]
