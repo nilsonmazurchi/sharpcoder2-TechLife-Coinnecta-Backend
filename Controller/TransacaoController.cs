@@ -217,5 +217,25 @@ namespace sharpcoder2_TechLife_Coinnecta_Backend.Controller
                 return StatusCode(500, $"Erro ao obter todas as transações: {ex.Message}");
             }
         }
+
+        [HttpGet("conta/{contaId}")]
+        public IActionResult ObterTransacoesPorContaId(int contaId)
+        {
+            try
+            {
+                var transacoes = _appDbContext.Transacaos
+                    .Where(t => t.ContaOrigemId == contaId || t.ContaDestinoId == contaId)
+                    .ToList();
+                
+                if (transacoes == null || transacoes.Count == 0)
+                    return NotFound("Nenhuma transação encontrada para esta conta");
+
+                return Ok(transacoes);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao obter transações por ID da conta: {ex.Message}");
+            }
+        }
     }
 }
